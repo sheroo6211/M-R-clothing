@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M&R | Riyadh Luxury Fashion & Fragrances</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sand: {
+                            50: '#FBF9F5',
+                            100: '#F4EFEA',
+                            200: '#E6DCD1',
+                            800: '#5C5346',
+                            900: '#3D362C',
+                        },
+                        brand: {
+                            dark: '#111111',
+                            gold: '#C5A880',
+                            charcoal: '#222222',
+                            cream: '#FAF8F5'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF8F5;
+            color: #111111;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF8F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5A880;
+            border-radius: 3px;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Saudi Riyal Currency Symbol Inline Style */
+        .sar-symbol {
+            display: inline-block;
+            height: 1.1em;
+            width: auto;
+            vertical-align: -0.15em;
+        }
+    </style>
+</head>
+<body class="bg-brand-cream text-brand-dark min-h-screen flex flex-col selection:bg-brand-gold selection:text-white">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-brand-cream/95 backdrop-blur-md border-b border-sand-200 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" onclick="switchTab('home')" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 bg-brand-dark text-brand-gold flex items-center justify-center font-serif font-bold text-xl rounded-sm group-hover:bg-brand-gold group-hover:text-brand-dark transition-colors">
+                    M
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-2xl font-bold tracking-widest leading-none">M & R</span>
+                    <span class="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">Riyadh Atelier</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Tabs -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wider uppercase">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn pb-1 border-b-2 border-brand-dark transition-all">Home</button>
+                <button onclick="switchTab('fragrances')" id="nav-fragrances" class="nav-btn pb-1 border-b-2 border-transparent text-neutral-500 hover:text-brand-dark transition-all">Fragrances</button>
+                <button onclick="switchTab('casual')" id="nav-casual" class="nav-btn pb-1 border-b-2 border-transparent text-neutral-500 hover:text-brand-dark transition-all">Casual Wear</button>
+                <button onclick="switchTab('sportswear')" id="nav-sportswear" class="nav-btn pb-1 border-b-2 border-transparent text-neutral-500 hover:text-brand-dark transition-all">Sportswear</button>
+                <button onclick="switchTab('shoes')" id="nav-shoes" class="nav-btn pb-1 border-b-2 border-transparent text-neutral-500 hover:text-brand-dark transition-all">Shoes</button>
+            </nav>
+
+            <!-- Right Actions: Cart & Mobile Menu Toggle -->
+            <div class="flex items-center space-x-4">
+                <button onclick="switchTab('cart')" id="nav-cart" class="relative p-2.5 rounded-full border border-sand-200 bg-white hover:border-brand-dark transition-all flex items-center space-x-2 px-4">
+                    <svg class="w-5 h-5 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span class="text-xs font-semibold tracking-wide hidden sm:inline">Bag</span>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-dark text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-full border border-sand-200 bg-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-sand-200 px-6 py-4 space-y-3">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left py-2 font-medium uppercase text-sm tracking-wider">Home</button>
+            <button onclick="switchTab('fragrances'); toggleMobileMenu();" class="block w-full text-left py-2 font-medium uppercase text-sm tracking-wider">Fragrances</button>
+            <button onclick="switchTab('casual'); toggleMobileMenu();" class="block w-full text-left py-2 font-medium uppercase text-sm tracking-wider">Casual Wear</button>
+            <button onclick="switchTab('sportswear'); toggleMobileMenu();" class="block w-full text-left py-2 font-medium uppercase text-sm tracking-wider">Sportswear</button>
+            <button onclick="switchTab('shoes'); toggleMobileMenu();" class="block w-full text-left py-2 font-medium uppercase text-sm tracking-wider">Shoes</button>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Views -->
+    <main class="flex-grow">
+
+        <!-- VIEW: HOME -->
+        <section id="view-home" class="view-section fade-in">
+            <!-- Hero Banner Inspired by Template 1 & 4 -->
+            <div class="relative overflow-hidden bg-sand-100 py-16 md:py-24 border-b border-sand-200">
+                <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 space-y-6">
+                        <h1 class="serif-title text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-brand-dark leading-[1.1]">
+                            Elegance & <br><span class="italic font-normal">Sophistication</span> Always.
+                        </h1>
+                        <p class="text-neutral-600 max-w-lg text-base sm:text-lg font-light leading-relaxed">
+                            Designed in the heart of Riyadh. M&R curates uncompromising artisan craftsmanship, blending modern silhouettes with timeless Arabian heritage.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-4">
+                            <button onclick="switchTab('casual')" class="bg-brand-dark text-white px-8 py-4 text-sm font-medium uppercase tracking-widest rounded-sm hover:bg-neutral-800 transition-all shadow-sm">
+                                Explore Collection
+                            </button>
+                            <button onclick="switchTab('fragrances')" class="bg-white text-brand-dark border border-brand-dark px-8 py-4 text-sm font-medium uppercase tracking-widest rounded-sm hover:bg-brand-dark hover:text-white transition-all">
+                                Discover Fragrances
+                            </button>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <!-- Custom geometric container inspired by template -->
+                            <div class="w-full h-[450px] sm:h-[520px] rounded-t-[180px] rounded-b-lg overflow-hidden shadow-2xl border border-sand-200 bg-sand-200">
+                                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=1000" alt="M&R Collection Model" class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <!-- Minimalist Accent Card -->
+                            <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-sm shadow-xl border border-sand-200 hidden sm:block">
+                                <p class="serif-title text-lg font-bold text-brand-dark">Atelier M&R</p>
+                                <p class="text-xs text-neutral-500 uppercase tracking-widest mt-1">Al-Olaya District, Riyadh</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brand Philosophy / Showcase Grid -->
+            <section class="py-20 max-w-7xl mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                    <span class="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Signature Categories</span>
+                    <h2 class="serif-title text-3xl sm:text-4xl font-bold">Explore Our Distinctive Lines</h2>
+                    <div class="w-12 h-[2px] bg-brand-gold mx-auto"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Category Card 1 -->
+                    <div onclick="switchTab('fragrances')" class="group cursor-pointer bg-white rounded-sm overflow-hidden border border-sand-200 shadow-sm hover:shadow-md transition-all">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=800" alt="Fragrances" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center space-y-2">
+                            <h3 class="serif-title text-xl font-bold">Fragrances</h3>
+                            <p class="text-xs uppercase tracking-widest text-neutral-500">Oud & Amber Notes</p>
+                        </div>
+                    </div>
+
+                    <!-- Category Card 2 -->
+                    <div onclick="switchTab('casual')" class="group cursor-pointer bg-white rounded-sm overflow-hidden border border-sand-200 shadow-sm hover:shadow-md transition-all">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=800" alt="Casual Wear" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center space-y-2">
+                            <h3 class="serif-title text-xl font-bold">Casual Wear</h3>
+                            <p class="text-xs uppercase tracking-widest text-neutral-500">Tailored Daily Elegance</p>
+                        </div>
+                    </div>
+
+                    <!-- Category Card 3 -->
+                    <div onclick="switchTab('sportswear')" class="group cursor-pointer bg-white rounded-sm overflow-hidden border border-sand-200 shadow-sm hover:shadow-md transition-all">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=800" alt="Sportswear" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center space-y-2">
+                            <h3 class="serif-title text-xl font-bold">Sportswear</h3>
+                            <p class="text-xs uppercase tracking-widest text-neutral-500">Performance & Craft</p>
+                        </div>
+                    </div>
+
+                    <!-- Category Card 4 -->
+                    <div onclick="switchTab('shoes')" class="group cursor-pointer bg-white rounded-sm overflow-hidden border border-sand-200 shadow-sm hover:shadow-md transition-all">
+                        <div class="h-80 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=800" alt="Shoes" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 text-center space-y-2">
+                            <h3 class="serif-title text-xl font-bold">Shoes</h3>
+                            <p class="text-xs uppercase tracking-widest text-neutral-500">Handcrafted Leather</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- VIEW: FRAGRANCES -->
+        <section id="view-fragrances" class="view-section hidden fade-in py-16 max-w-7xl mx-auto px-6">
+            <div class="border-b border-sand-200 pb-8 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Atelier Collection</span>
+                    <h2 class="serif-title text-4xl font-bold mt-2">Fragrances</h2>
+                </div>
+                <p class="text-neutral-600 max-w-md text-sm">
+                    Immersive scents crafted with traditional Arabian woods, pure Taif rose extracts, and rare amber resins.
+                </p>
+            </div>
+            <div id="catalog-fragrances" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically rendered via JS -->
+            </div>
+        </section>
+
+        <!-- VIEW: CASUAL WEAR -->
+        <section id="view-casual" class="view-section hidden fade-in py-16 max-w-7xl mx-auto px-6">
+            <div class="border-b border-sand-200 pb-8 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Atelier Collection</span>
+                    <h2 class="serif-title text-4xl font-bold mt-2">Casual Wear</h2>
+                </div>
+                <p class="text-neutral-600 max-w-md text-sm">
+                    Refined everyday silhouettes tailored from breathable premium linens and Egyptian cottons for the Riyadh climate.
+                </p>
+            </div>
+            <div id="catalog-casual" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically rendered via JS -->
+            </div>
+        </section>
+
+        <!-- VIEW: SPORTSWEAR -->
+        <section id="view-sportswear" class="view-section hidden fade-in py-16 max-w-7xl mx-auto px-6">
+            <div class="border-b border-sand-200 pb-8 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Atelier Collection</span>
+                    <h2 class="serif-title text-4xl font-bold mt-2">Sportswear</h2>
+                </div>
+                <p class="text-neutral-600 max-w-md text-sm">
+                    Engineered performance apparel combining moisture-wicking technical fabrics with minimalist tailoring.
+                </p>
+            </div>
+            <div id="catalog-sportswear" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically rendered via JS -->
+            </div>
+        </section>
+
+        <!-- VIEW: SHOES -->
+        <section id="view-shoes" class="view-section hidden fade-in py-16 max-w-7xl mx-auto px-6">
+            <div class="border-b border-sand-200 pb-8 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Atelier Collection</span>
+                    <h2 class="serif-title text-4xl font-bold mt-2">Shoes</h2>
+                </div>
+                <p class="text-neutral-600 max-w-md text-sm">
+                    Handmade leather loafers, sneakers, and slip-ons crafted by master artisans with Italian and local hides.
+                </p>
+            </div>
+            <div id="catalog-shoes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically rendered via JS -->
+            </div>
+        </section>
+
+        <!-- VIEW: CART -->
+        <section id="view-cart" class="view-section hidden fade-in py-16 max-w-7xl mx-auto px-6">
+            <div class="border-b border-sand-200 pb-8 mb-12">
+                <span class="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Your Selection</span>
+                <h2 class="serif-title text-4xl font-bold mt-2">Shopping Bag</h2>
+            </div>
+            <div id="cart-container" class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Dynamically rendered via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer with Instagram & WhatsApp Temporary Placeholders -->
+    <footer class="bg-brand-dark text-white border-t border-neutral-800 mt-24">
+        <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-brand-gold text-brand-dark flex items-center justify-center font-serif font-bold text-lg rounded-sm">
+                        M
+                    </div>
+                    <span class="serif-title text-xl font-bold tracking-widest">M & R</span>
+                </div>
+                <p class="text-neutral-400 text-sm leading-relaxed">
+                    Exclusive clothing and fragrance brand based in Riyadh, Saudi Arabia. Dedicated to uncompromising quality and timeless luxury.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="text-xs font-semibold uppercase tracking-widest text-brand-gold">Atelier Riyadh</h4>
+                <p class="text-neutral-400 text-sm">
+                    Al-Olaya Street, Riyadh<br>
+                    Kingdom of Saudi Arabia
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="text-xs font-semibold uppercase tracking-widest text-brand-gold">Concierge Direct</h4>
+                <div class="flex flex-col space-y-2">
+                    <!-- WhatsApp Temporary Placeholder Button -->
+                    <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-sm text-neutral-300 hover:text-white transition-colors bg-neutral-900 border border-neutral-800 px-4 py-2.5 rounded-sm">
+                        <svg class="w-4 h-4 text-brand-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m0 1.83c2.19 0 4.25.85 5.8 2.4 1.55 1.55 2.4 3.61 2.4 5.8 0 4.53-3.69 8.22-8.22 8.22-1.46 0-2.88-.39-4.12-1.13l-.3-.18-3.09.81.82-3-.2-.31a8.169 8.169 0 01-1.25-4.41c0-4.53 3.69-8.22 8.22-8.22m-3.9 4.39c-.19 0-.5.07-.76.35-.26.28-1 .98-1 2.38 0 1.4 1.03 2.75 1.17 2.94.14.19 2.01 3.07 4.88 4.3 2.87 1.23 2.87.82 3.39.77.52-.05 1.68-.69 1.92-1.35.24-.66.24-1.22.17-1.35-.07-.13-.26-.2-.55-.34-.29-.14-1.68-.83-1.94-.92-.26-.09-.45-.14-.64.14-.19.28-.74.92-.91 1.11-.17.19-.34.22-.63.08-.29-.14-1.22-.45-2.33-1.44-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.59.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.35-.02-.49-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49l-.55-.01z"/></svg>
+                        <span>WhatsApp Concierge</span>
+                    </a>
+                    <!-- Instagram Temporary Placeholder Button -->
+                    <a href="https://instagram.com/mandr_riyadh" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-sm text-neutral-300 hover:text-white transition-colors bg-neutral-900 border border-neutral-800 px-4 py-2.5 rounded-sm">
+                        <svg class="w-4 h-4 text-brand-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <span>Instagram Profile</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="text-xs font-semibold uppercase tracking-widest text-brand-gold">Atelier Hours</h4>
+                <p class="text-neutral-400 text-sm">
+                    Saturday to Thursday<br>
+                    10:00 AM - 10:00 PM<br>
+                    Friday: 4:00 PM - 10:00 PM
+                </p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 py-6 border-t border-neutral-800 text-xs text-neutral-500 text-center">
+            &copy; 2026 M&R Atelier Riyadh. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Currency display format
+        const currencySymbol = 'SAR';
+
+        // Product Database
+        const products = {
+            fragrances: [
+                { id: 'f1', name: 'Royal Taif Rose Elixir', subtitle: 'Pure Floral Extract 100ml', price: 920, image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800' },
+                { id: 'f2', name: 'Amber Al-Olaya', subtitle: 'Resin & Warm Spices 75ml', price: 1150, image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800' },
+                { id: 'f3', name: 'Najd Woody Smoke', subtitle: 'Private Reserve Oud 100ml', price: 1480, image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800' }
+            ],
+            casual: [
+                { id: 'c1', name: 'Sahara Linen Thobe Jacket', subtitle: 'Raw Natural Sand Linen', price: 1850, image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=800' },
+                { id: 'c2', name: 'Atelier Tailored Overshirt', subtitle: 'Midnight Charcoal Cotton', price: 890, image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80&w=800' },
+                { id: 'c3', name: 'Riyadh Heritage Knit Polo', subtitle: 'Off-White Merino Wool', price: 740, image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800' }
+            ],
+            sportswear: [
+                { id: 's1', name: 'Technical Track Pullover', subtitle: 'Breathable Charcoal Weave', price: 960, image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=800' },
+                { id: 's2', name: 'Atelier Motion Joggers', subtitle: 'Lightweight Sand Performance', price: 820, image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&q=80&w=800' },
+                { id: 's3', name: 'Performance Zip Vest', subtitle: 'Wind-Resistant Matte Finish', price: 1050, image: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=800' }
+            ],
+            shoes: [
+                { id: 'sh1', name: 'Handcrafted Calfskin Loafer', subtitle: 'Cognac Italian Leather', price: 2100, image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=800' },
+                { id: 'sh2', name: 'Minimalist Court Sneaker', subtitle: 'Pristine White Calfhide', price: 1350, image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=800' },
+                { id: 'sh3', name: 'Atelier Suede Slip-On', subtitle: 'Sandstone Soft Suede', price: 1620, image: 'https://images.unsplash.com/photo-1533867617858-e7d97e0afd8b?auto=format&fit=crop&q=80&w=800' }
+            ]
+        };
+
+        // Cart State
+        let cart = [];
+
+        // Switch Tabs Function
+        function switchTab(tabId) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+            });
+            // Show target view
+            const target = document.getElementById('view-' + tabId);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('border-brand-dark', 'text-brand-dark');
+                btn.classList.add('border-transparent', 'text-neutral-500');
+            });
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('border-transparent', 'text-neutral-500');
+                activeBtn.classList.add('border-brand-dark', 'text-brand-dark');
+            }
+
+            if (tabId === 'cart') {
+                renderCart();
+            }
+        }
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Catalogs
+        function renderCatalogs() {
+            ['fragrances', 'casual', 'sportswear', 'shoes'].forEach(category => {
+                const container = document.getElementById('catalog-' + category);
+                if (!container) return;
+
+                container.innerHTML = products[category].map(item => `
+                    <div class="bg-white rounded-sm overflow-hidden border border-sand-200 group flex flex-col justify-between shadow-sm hover:shadow-md transition-all">
+                        <div>
+                            <div class="h-96 overflow-hidden relative bg-sand-100">
+                                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-6 space-y-1">
+                                <h3 class="serif-title text-xl font-bold text-brand-dark">${item.name}</h3>
+                                <p class="text-xs uppercase tracking-widest text-neutral-500">${item.subtitle}</p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex items-center justify-between">
+                            <span class="font-semibold text-lg flex items-center">${item.price} ${currencySymbol}</span>
+                            <button onclick="addToCart('${category}', '${item.id}')" class="bg-brand-dark text-white px-5 py-2.5 text-xs font-semibold uppercase tracking-widest rounded-sm hover:bg-neutral-800 transition-colors">
+                                Add to Bag
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        // Add to Cart
+        function addToCart(category, id) {
+            const item = products[category].find(p => p.id === id);
+            if (!item) return;
+
+            const existing = cart.find(p => p.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+            updateCartBadge();
+            showNotification('Added to your shopping bag.');
+        }
+
+        // Update Cart Badge
+        function updateCartBadge() {
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-badge').innerText = totalQty;
+        }
+
+        // Render Cart View
+        function renderCart() {
+            const container = document.getElementById('cart-container');
+            if (!container) return;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="lg:col-span-12 text-center py-20 space-y-6">
+                        <p class="text-neutral-500 text-sm uppercase tracking-widest">Your shopping bag is currently empty.</p>
+                        <button onclick="switchTab('casual')" class="bg-brand-dark text-white px-8 py-3.5 text-xs font-semibold uppercase tracking-widest rounded-sm">
+                            Explore Collections
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            container.innerHTML = `
+                <div class="lg:col-span-8 space-y-6">
+                    ${cart.map(item => `
+                        <div class="flex items-center justify-between bg-white p-6 rounded-sm border border-sand-200">
+                            <div class="flex items-center space-x-4">
+                                <img src="${item.image}" alt="${item.name}" class="w-20 h-24 object-cover rounded-sm bg-sand-100">
+                                <div>
+                                    <h4 class="serif-title text-lg font-bold">${item.name}</h4>
+                                    <p class="text-xs uppercase tracking-widest text-neutral-500">${item.subtitle}</p>
+                                    <p class="text-sm font-semibold mt-2 flex items-center">${item.price} ${currencySymbol}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center border border-sand-200 rounded-sm">
+                                    <button onclick="updateQty('${item.id}', -1)" class="px-3 py-1 text-sm hover:bg-sand-100 transition-colors">-</button>
+                                    <span class="px-3 py-1 text-sm font-medium">${item.qty}</span>
+                                    <button onclick="updateQty('${item.id}', 1)" class="px-3 py-1 text-sm hover:bg-sand-100 transition-colors">+</button>
+                                </div>
+                                <button onclick="removeFromCart('${item.id}')" class="text-neutral-400 hover:text-red-600 transition-colors text-sm uppercase tracking-widest">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="lg:col-span-4">
+                    <div class="bg-white p-8 rounded-sm border border-sand-200 space-y-6 sticky top-28">
+                        <h3 class="serif-title text-xl font-bold border-b border-sand-200 pb-4">Order Summary</h3>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-neutral-600">Subtotal</span>
+                            <span class="font-semibold flex items-center">${subtotal} ${currencySymbol}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-neutral-600">Riyadh Atelier Delivery</span>
+                            <span class="font-semibold">Complimentary</span>
+                        </div>
+                        <div class="border-t border-sand-200 pt-4 flex justify-between text-base font-bold">
+                            <span>Total</span>
+                            <span class="flex items-center">${subtotal} ${currencySymbol}</span>
+                        </div>
+                        <button onclick="checkout()" class="w-full bg-brand-dark text-white py-4 text-xs font-semibold uppercase tracking-widest rounded-sm hover:bg-neutral-800 transition-colors">
+                            Proceed to Secure Checkout
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update Quantity
+        function updateQty(id, change) {
+            const item = cart.find(p => p.id === id);
+            if (!item) return;
+            item.qty += change;
+            if (item.qty <= 0) {
+                cart = cart.filter(p => p.id !== id);
+            }
+            updateCartBadge();
+            renderCart();
+        }
+
+        // Remove From Cart
+        function removeFromCart(id) {
+            cart = cart.filter(p => p.id !== id);
+            updateCartBadge();
+            renderCart();
+            showNotification('Item removed from bag.');
+        }
+
+        // Checkout simulation
+        function checkout() {
+            showNotification('Order placed successfully! Our Riyadh concierge will contact you via WhatsApp.');
+            cart = [];
+            updateCartBadge();
+            switchTab('home');
+        }
+
+        // Minimalist Message Box notification
+        function showNotification(message) {
+            const existing = document.getElementById('toast-notification');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toast-notification';
+            toast.className = 'fixed bottom-6 right-6 z-50 bg-brand-dark text-white px-6 py-4 rounded-sm shadow-2xl text-xs uppercase tracking-widest fade-in border border-neutral-800';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            renderCatalogs();
+        }
+    </script>
+</body>
+</html>
